@@ -1,0 +1,52 @@
+{
+  "name": "egress-tap",
+  "version": "0.1.0",
+  "description": "Record every host your AI coding agent contacts, then emit a least-privilege Claude Code / Codex network allowlist.",
+  "keywords": [
+    "claude-code",
+    "codex",
+    "ai-agent",
+    "sandbox",
+    "allowlist",
+    "egress",
+    "proxy",
+    "security"
+  ],
+  "license": "MIT",
+  "author": "canerinali",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/canerinali/egress-tap.git"
+  },
+  "homepage": "https://github.com/canerinali/egress-tap#readme",
+  "bugs": {
+    "url": "https://github.com/canerinali/egress-tap/issues"
+  },
+  "type": "module",
+  "bin": {
+    "egress-tap": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json && node -e \"require('fs').chmodSync('dist/cli.js', 0o755)\"",
+    "test": "npm run build && vitest run",
+    "dev": "tsx src/cli.ts",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "commander": "^15.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.4",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.2"
+  }
+}
