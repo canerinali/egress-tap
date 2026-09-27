@@ -38,7 +38,8 @@
     "build": "tsc -p tsconfig.json && node -e \"require('fs').chmodSync('dist/cli.js', 0o755)\"",
     "test": "npm run build && vitest run",
     "dev": "tsx src/cli.ts",
-    "prepack": "npm run build"
+    "prepack": "npm run build",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "commander": "^15.0.0"
