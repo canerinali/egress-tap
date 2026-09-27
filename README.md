@@ -1,14 +1,19 @@
-# egress-tap: record every host your AI coding agent contacts, then emit a least-privilege Claude Code / Codex network allowlist.
+# egress-tap
+
+Record every host your AI coding agent contacts, then emit the least-privilege Claude Code / Codex network allowlist it actually needed.
+
 Install: `npm install -g egress-tap` (or run it with `npx egress-tap`, Node >= 22)\
 Usage: `npx egress-tap -- claude -p "add a test and run npm install" && npx egress-tap emit --format claude`
 
 <!-- badges -->
 
-Run your coding agent once behind egress-tap in observe mode. It sets `HTTP(S)_PROXY` for the
-agent, forwards everything unchanged through a local proxy, and logs one line per connection
-(`host:port`, bytes, duration). Afterwards it turns that log into the allowlist the agent
-actually needed, in Claude Code `settings.json` or Codex `config.toml` form, and calls out the
-hosts that look like exfiltration before you lock anything in.
+- **See what your agent really reached.** An observe-only local proxy logs one line per connection (`host:port`, bytes, duration). No TLS interception, no CA to install, nothing blocked.
+- **Get a paste-ready allowlist.** Claude Code `sandbox.network.allowedDomains` JSON or a Codex permission profile, with careful wildcards (`*.npmjs.org` yes, `*.github.io` never).
+- **Catch exfil hosts before you lock them in.** Random-looking subdomains, IP literals, paste/tunnel services and odd ports are flagged and never auto-allowlisted.
+
+<!-- demo: uncomment after `vhs demo/demo.tape` has produced demo/demo.gif
+![egress-tap: observe a fake agent, then emit a Claude Code allowlist](demo/demo.gif)
+-->
 
 ## Quickstart
 
