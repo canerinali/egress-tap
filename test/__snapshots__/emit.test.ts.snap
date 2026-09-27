@@ -1,0 +1,494 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`json emitter > dumps every host with flags and rules 1`] = `
+{
+  "connections": 60,
+  "excludedAgentHosts": [
+    "api.anthropic.com",
+    "statsig.anthropic.com",
+  ],
+  "hosts": [
+    {
+      "agent": true,
+      "bytesDown": 214887,
+      "bytesUp": 26139,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:12.250Z",
+      "flags": [],
+      "hits": 20,
+      "host": "api.anthropic.com",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:27.000Z",
+      "ports": [
+        443,
+      ],
+      "rule": null,
+      "suspicious": false,
+    },
+    {
+      "agent": false,
+      "bytesDown": 117247,
+      "bytesUp": 15059,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:12.500Z",
+      "flags": [],
+      "hits": 12,
+      "host": "registry.npmjs.org",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:25.000Z",
+      "ports": [
+        443,
+      ],
+      "rule": "**.npmjs.org",
+      "suspicious": false,
+    },
+    {
+      "agent": false,
+      "bytesDown": 40720,
+      "bytesUp": 5840,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:12.750Z",
+      "flags": [],
+      "hits": 5,
+      "host": "api.github.com",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:21.500Z",
+      "ports": [
+        443,
+      ],
+      "rule": "api.github.com",
+      "suspicious": false,
+    },
+    {
+      "agent": false,
+      "bytesDown": 31266,
+      "bytesUp": 4602,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:13.000Z",
+      "flags": [],
+      "hits": 4,
+      "host": "pypi.org",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:20.750Z",
+      "ports": [
+        443,
+      ],
+      "rule": "pypi.org",
+      "suspicious": false,
+    },
+    {
+      "agent": false,
+      "bytesDown": 13537,
+      "bytesUp": 2189,
+      "errors": 1,
+      "firstTs": "2026-09-27T14:03:13.500Z",
+      "flags": [],
+      "hits": 3,
+      "host": "files.pythonhosted.org",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:19.500Z",
+      "ports": [
+        443,
+      ],
+      "rule": "files.pythonhosted.org",
+      "suspicious": false,
+    },
+    {
+      "agent": false,
+      "bytesDown": 22074,
+      "bytesUp": 3378,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:13.250Z",
+      "flags": [],
+      "hits": 3,
+      "host": "github.com",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:19.250Z",
+      "ports": [
+        443,
+      ],
+      "rule": "github.com",
+      "suspicious": false,
+    },
+    {
+      "agent": true,
+      "bytesDown": 22860,
+      "bytesUp": 3420,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:13.750Z",
+      "flags": [],
+      "hits": 3,
+      "host": "statsig.anthropic.com",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:19.750Z",
+      "ports": [
+        443,
+      ],
+      "rule": null,
+      "suspicious": false,
+    },
+    {
+      "agent": false,
+      "bytesDown": 14323,
+      "bytesUp": 2231,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:14.250Z",
+      "flags": [
+        {
+          "code": "paste-tunnel",
+          "reason": "paste/tunnel service (paste.ee)",
+        },
+      ],
+      "hits": 2,
+      "host": "paste.ee",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:18.000Z",
+      "ports": [
+        443,
+      ],
+      "rule": "paste.ee",
+      "suspicious": true,
+    },
+    {
+      "agent": false,
+      "bytesDown": 14061,
+      "bytesUp": 2217,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:14.000Z",
+      "flags": [],
+      "hits": 2,
+      "host": "www.npmjs.org",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:17.750Z",
+      "ports": [
+        443,
+      ],
+      "rule": "**.npmjs.org",
+      "suspicious": false,
+    },
+    {
+      "agent": false,
+      "bytesDown": 6834,
+      "bytesUp": 1098,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:15.500Z",
+      "flags": [
+        {
+          "code": "ip-literal",
+          "reason": "direct IP address, no hostname",
+        },
+        {
+          "code": "odd-port",
+          "reason": "non-standard port 8080",
+        },
+      ],
+      "hits": 1,
+      "host": "1.2.3.4",
+      "kinds": [
+        "http",
+      ],
+      "lastTs": "2026-09-27T14:03:15.500Z",
+      "ports": [
+        8080,
+      ],
+      "rule": "1.2.3.4",
+      "suspicious": true,
+    },
+    {
+      "agent": false,
+      "bytesDown": 6572,
+      "bytesUp": 1084,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:15.000Z",
+      "flags": [],
+      "hits": 1,
+      "host": "bar.github.io",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:15.000Z",
+      "ports": [
+        443,
+      ],
+      "rule": "bar.github.io",
+      "suspicious": false,
+    },
+    {
+      "agent": false,
+      "bytesDown": 6703,
+      "bytesUp": 1091,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:15.250Z",
+      "flags": [],
+      "hits": 1,
+      "host": "baz.github.io",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:15.250Z",
+      "ports": [
+        443,
+      ],
+      "rule": "baz.github.io",
+      "suspicious": false,
+    },
+    {
+      "agent": false,
+      "bytesDown": 6441,
+      "bytesUp": 1077,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:14.750Z",
+      "flags": [],
+      "hits": 1,
+      "host": "foo.github.io",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:14.750Z",
+      "ports": [
+        443,
+      ],
+      "rule": "foo.github.io",
+      "suspicious": false,
+    },
+    {
+      "agent": false,
+      "bytesDown": 6310,
+      "bytesUp": 1070,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:14.500Z",
+      "flags": [],
+      "hits": 1,
+      "host": "npmjs.org",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:14.500Z",
+      "ports": [
+        443,
+      ],
+      "rule": "**.npmjs.org",
+      "suspicious": false,
+    },
+    {
+      "agent": false,
+      "bytesDown": 6965,
+      "bytesUp": 1105,
+      "errors": 0,
+      "firstTs": "2026-09-27T14:03:15.750Z",
+      "flags": [
+        {
+          "code": "high-entropy",
+          "reason": "random-looking label "x9k2m4p7q1w8e5r3t6y0u2i4o" (25 chars, 4.48 bits/char)",
+        },
+      ],
+      "hits": 1,
+      "host": "x9k2m4p7q1w8e5r3t6y0u2i4o.dnslog.example.net",
+      "kinds": [
+        "connect",
+      ],
+      "lastTs": "2026-09-27T14:03:15.750Z",
+      "ports": [
+        443,
+      ],
+      "rule": "x9k2m4p7q1w8e5r3t6y0u2i4o.dnslog.example.net",
+      "suspicious": true,
+    },
+  ],
+  "rules": [
+    {
+      "claude": [
+        "*.npmjs.org",
+        "npmjs.org",
+      ],
+      "codex": "**.npmjs.org",
+      "covers": [
+        "registry.npmjs.org",
+        "www.npmjs.org",
+        "npmjs.org",
+      ],
+      "domain": "npmjs.org",
+      "flags": [],
+      "hits": 15,
+      "suspicious": false,
+      "type": "wildcard",
+    },
+    {
+      "claude": [
+        "api.github.com",
+      ],
+      "codex": "api.github.com",
+      "covers": [
+        "api.github.com",
+      ],
+      "domain": "api.github.com",
+      "flags": [],
+      "hits": 5,
+      "suspicious": false,
+      "type": "exact",
+    },
+    {
+      "claude": [
+        "pypi.org",
+      ],
+      "codex": "pypi.org",
+      "covers": [
+        "pypi.org",
+      ],
+      "domain": "pypi.org",
+      "flags": [],
+      "hits": 4,
+      "suspicious": false,
+      "type": "exact",
+    },
+    {
+      "claude": [
+        "files.pythonhosted.org",
+      ],
+      "codex": "files.pythonhosted.org",
+      "covers": [
+        "files.pythonhosted.org",
+      ],
+      "domain": "files.pythonhosted.org",
+      "flags": [],
+      "hits": 3,
+      "suspicious": false,
+      "type": "exact",
+    },
+    {
+      "claude": [
+        "github.com",
+      ],
+      "codex": "github.com",
+      "covers": [
+        "github.com",
+      ],
+      "domain": "github.com",
+      "flags": [],
+      "hits": 3,
+      "suspicious": false,
+      "type": "exact",
+    },
+    {
+      "claude": [],
+      "codex": null,
+      "covers": [
+        "paste.ee",
+      ],
+      "domain": "paste.ee",
+      "flags": [
+        {
+          "code": "paste-tunnel",
+          "reason": "paste/tunnel service (paste.ee)",
+        },
+      ],
+      "hits": 2,
+      "suspicious": true,
+      "type": "exact",
+    },
+    {
+      "claude": [],
+      "codex": null,
+      "covers": [
+        "1.2.3.4",
+      ],
+      "domain": "1.2.3.4",
+      "flags": [
+        {
+          "code": "ip-literal",
+          "reason": "direct IP address, no hostname",
+        },
+        {
+          "code": "odd-port",
+          "reason": "non-standard port 8080",
+        },
+      ],
+      "hits": 1,
+      "suspicious": true,
+      "type": "exact",
+    },
+    {
+      "claude": [
+        "bar.github.io",
+      ],
+      "codex": "bar.github.io",
+      "covers": [
+        "bar.github.io",
+      ],
+      "domain": "bar.github.io",
+      "flags": [],
+      "hits": 1,
+      "suspicious": false,
+      "type": "exact",
+      "wildcardRefused": "shared-hosting",
+    },
+    {
+      "claude": [
+        "baz.github.io",
+      ],
+      "codex": "baz.github.io",
+      "covers": [
+        "baz.github.io",
+      ],
+      "domain": "baz.github.io",
+      "flags": [],
+      "hits": 1,
+      "suspicious": false,
+      "type": "exact",
+      "wildcardRefused": "shared-hosting",
+    },
+    {
+      "claude": [
+        "foo.github.io",
+      ],
+      "codex": "foo.github.io",
+      "covers": [
+        "foo.github.io",
+      ],
+      "domain": "foo.github.io",
+      "flags": [],
+      "hits": 1,
+      "suspicious": false,
+      "type": "exact",
+      "wildcardRefused": "shared-hosting",
+    },
+    {
+      "claude": [],
+      "codex": null,
+      "covers": [
+        "x9k2m4p7q1w8e5r3t6y0u2i4o.dnslog.example.net",
+      ],
+      "domain": "x9k2m4p7q1w8e5r3t6y0u2i4o.dnslog.example.net",
+      "flags": [
+        {
+          "code": "high-entropy",
+          "reason": "random-looking label "x9k2m4p7q1w8e5r3t6y0u2i4o" (25 chars, 4.48 bits/char)",
+        },
+      ],
+      "hits": 1,
+      "suspicious": true,
+      "type": "exact",
+    },
+  ],
+  "session": "sample",
+  "tool": "egress-tap",
+}
+`;
