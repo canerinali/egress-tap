@@ -28,13 +28,14 @@ export function createSession(dir: string, name?: string, now: Date = new Date()
   if (name !== undefined && !isValidSessionName(name)) {
     throw new Error(`invalid session name "${name}": use letters, digits, ".", "_" or "-"`);
   }
-  mkdirSync(dir, { recursive: true });
+  // Owner-only: hostnames reveal what the user works on (internal services, customers).
+  mkdirSync(dir, { recursive: true, mode: 0o700 });
   const base = name ?? makeSessionId(now);
   for (let i = 1; i < 1000; i++) {
     const id = i === 1 ? base : `${base}-${i}`;
     const file = path.join(dir, id + EXT);
     try {
-      writeFileSync(file, '', { flag: 'wx' });
+      writeFileSync(file, '', { flag: 'wx', mode: 0o600 });
       return { id, path: file };
     } catch (err) {
       if ((err as NodeJS.ErrnoException).code !== 'EEXIST') throw err;
@@ -54,15 +55,27 @@ export class JsonlWriter {
 
 const KINDS = new Set(['connect', 'http']);
 const STATUSES = new Set(['ok', 'upstream_error', 'bad_request']);
+/**
+ * What the proxy can actually record: Node's HTTP parser rejects control and non-ASCII bytes in
+ * the request line and Host header, and URL hostnames are punycoded. Anything else in a session
+ * file was not written by us (hand-edited, planted in a cloned repo) and could smuggle terminal
+ * escapes or Markdown/TOML-breaking characters into reports, so it is skipped.
+ */
+const HOST_RE = /^[\x21-\x7e]{1,255}$/;
+const TS_RE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,9})?Z$/;
 
 function isEvent(v: unknown): v is ConnEvent {
   if (!v || typeof v !== 'object') return false;
   const e = v as Record<string, unknown>;
   return (
     typeof e['host'] === 'string' &&
-    e['host'] !== '' &&
+    HOST_RE.test(e['host']) &&
     typeof e['port'] === 'number' &&
+    Number.isInteger(e['port']) &&
+    e['port'] >= 0 &&
+    e['port'] <= 65535 &&
     typeof e['ts'] === 'string' &&
+    TS_RE.test(e['ts']) &&
     KINDS.has(e['kind'] as string) &&
     STATUSES.has(e['status'] as string)
   );
@@ -79,7 +92,7 @@ export function parseJsonl(text: string): ConnEvent[] {
       if (isEvent(parsed)) {
         out.push({
           ...parsed,
-          method: typeof parsed.method === 'string' ? parsed.method : '',
+          method: typeof parsed.method === 'string' && /^[A-Za-z]{1,32}$/.test(parsed.method) ? parsed.method : '',
           bytesUp: Number(parsed.bytesUp) || 0,
           bytesDown: Number(parsed.bytesDown) || 0,
           durationMs: Number(parsed.durationMs) || 0,
@@ -109,10 +122,12 @@ export function listSessions(dir: string): SessionInfo[] {
   const out: SessionInfo[] = [];
   for (const n of names) {
     if (!n.endsWith(EXT)) continue;
+    const id = n.slice(0, -EXT.length);
+    if (!isValidSessionName(id)) continue; // not ours: would fail readSession and may hold escapes
     const p = path.join(dir, n);
     try {
       const st = statSync(p);
-      if (st.isFile()) out.push({ id: n.slice(0, -EXT.length), path: p, mtimeMs: st.mtimeMs });
+      if (st.isFile()) out.push({ id, path: p, mtimeMs: st.mtimeMs });
     } catch {
       // raced with deletion
     }

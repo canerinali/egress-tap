@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync, utimesSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, rmSync, statSync, utimesSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
@@ -55,6 +55,38 @@ describe('log', () => {
     expect(parseJsonl(text).map((e) => e.port)).toEqual([443, 80]);
     writeFileSync(path.join(dir, 'notes.txt'), 'ignored');
     expect(listSessions(dir)).toEqual([]);
+  });
+
+  it('rejects hosts and timestamps the proxy could never have written', () => {
+    const bad = [
+      { ...ev, host: 'evil\u001b[2K.example.com' }, // terminal escape
+      { ...ev, host: 'a\u202eb.example.com' }, // bidi override
+      { ...ev, host: 'a b.example.com' },
+      { ...ev, host: 'x\u007f.example.com' }, // DEL breaks TOML comments
+      { ...ev, host: 'a'.repeat(256) },
+      { ...ev, ts: '\u001b]0;pwned\u0007' },
+      { ...ev, port: 1.5 },
+      { ...ev, port: 70000 },
+    ];
+    const text = [...bad, ev].map((e) => JSON.stringify(e)).join('\n');
+    expect(parseJsonl(text)).toEqual([ev]);
+    expect(parseJsonl(JSON.stringify({ ...ev, method: 'GET\u001b[31m' }))[0]!.method).toBe('');
+  });
+
+  it('ignores session files whose names it would not have created', () => {
+    writeFileSync(path.join(dir, 'bad\u001b[2Kname.jsonl'), JSON.stringify(ev) + '\n');
+    writeFileSync(path.join(dir, '.hidden.jsonl'), JSON.stringify(ev) + '\n');
+    createSession(dir, 'good');
+    expect(listSessions(dir).map((s) => s.id)).toEqual(['good']);
+  });
+
+  it.skipIf(process.platform === 'win32')('creates the log dir and files owner-only', () => {
+    const sub = path.join(dir, 'fresh');
+    const s = createSession(sub, 'perm');
+    expect(statSync(sub).mode & 0o777).toBe(0o700);
+    expect(statSync(s.path).mode & 0o777).toBe(0o600);
+    new JsonlWriter(s.path).append(ev);
+    expect(statSync(s.path).mode & 0o777).toBe(0o600);
   });
 
   it('maps signals to 128+n exit codes', () => {

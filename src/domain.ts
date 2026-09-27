@@ -31,21 +31,85 @@ export const MULTI_PART_SUFFIXES = new Set([
 ]);
 
 /**
- * Platforms where subdomains belong to unrelated customers. Wildcarding one of these
- * (e.g. `*.github.io`) would allow anyone's site, so they are never wildcarded.
+ * Base domains where subdomains (or paths) belong to unrelated customers: hosting, object
+ * storage, serverless and blog platforms. Wildcarding one of these (e.g. `*.github.io`,
+ * `*.windows.net` for Azure Blob Storage) would let a prompt-injected agent exfiltrate to an
+ * attacker-owned tenant, so they are never wildcarded; each host stays an exact rule.
+ * Matched against `baseDomain()` output, i.e. the last two labels.
  */
 export const SHARED_HOSTING = new Set([
+  // Code hosting / static sites
   'github.io',
   'githubusercontent.com',
+  'gitlab.io',
+  'bitbucket.io',
+  'codeberg.page',
+  'readthedocs.io',
+  'gitbook.io',
+  'surge.sh',
+  'neocities.org',
+  'glitch.me',
+  // AWS
   'amazonaws.com',
   'cloudfront.net',
-  'herokuapp.com',
-  'vercel.app',
-  'netlify.app',
+  'on.aws',
+  'elasticbeanstalk.com',
+  'awsapprunner.com',
+  // Azure (Blob Storage, App Service, Front Door, API Management, cloud apps)
+  'windows.net',
+  'azure.com',
+  'azurewebsites.net',
+  'azureedge.net',
+  'azurefd.net',
+  'azure-api.net',
+  'azurestaticapps.net',
+  'azurecontainerapps.io',
+  'cloudapp.net',
+  'trafficmanager.net',
+  // Google Cloud / Firebase
+  'appspot.com',
+  'googleapis.com',
+  'googleusercontent.com',
+  'cloudfunctions.net',
+  'run.app',
+  'web.app',
+  'firebaseapp.com',
+  'firebaseio.com',
+  'firebasestorage.app',
+  // Cloudflare
   'workers.dev',
   'pages.dev',
-  'azurewebsites.net',
-  'appspot.com',
+  'r2.dev',
+  'cloudflarestorage.com',
+  // Other PaaS / storage / CDN tenants
+  'herokuapp.com',
+  'vercel.app',
+  'now.sh',
+  'netlify.app',
+  'netlify.com',
+  'fly.dev',
+  'onrender.com',
+  'railway.app',
+  'deno.dev',
+  'replit.app',
+  'replit.dev',
+  'repl.co',
+  'supabase.co',
+  'hf.space',
+  'digitaloceanspaces.com',
+  'ondigitalocean.app',
+  'backblazeb2.com',
+  'wasabisys.com',
+  'fastly.net',
+  'fastly-edge.com',
+  'akamaized.net',
+  'edgekey.net',
+  'blogspot.com',
+  'wordpress.com',
+  'notion.site',
+  'webflow.io',
+  'myshopify.com',
+  'pythonanywhere.com',
 ]);
 
 export function normalizeHost(host: string): string {

@@ -176,6 +176,18 @@ describe('wildcard rules', () => {
     expect(domains).toContain('a.github.io');
   });
 
+  it('never wildcards multi-tenant storage (e.g. Azure Blob -> *.windows.net)', () => {
+    const hosts = ['a', 'b', 'c'].flatMap((x) => [
+      stat(`${x}.blob.core.windows.net`),
+      stat(`${x}.storage.googleapis.com`),
+      stat(`${x}.r2.dev`),
+      stat(`${x}.web.app`),
+    ]);
+    const domains = claudeDomains(suggest(hosts));
+    expect(domains.filter((d) => d.startsWith('*.'))).toEqual([]);
+    expect(domains).toContain('a.blob.core.windows.net');
+  });
+
   it('refuses to wildcard a base that contains a flagged host', () => {
     const rules = suggest([
       stat('a.example.com'),

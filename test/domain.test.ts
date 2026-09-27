@@ -45,6 +45,10 @@ describe('matching helpers', () => {
   it('knows shared-hosting bases and agent hosts', () => {
     expect(isSharedHosting('github.io')).toBe(true);
     expect(isSharedHosting('github.com')).toBe(false);
+    // Multi-tenant storage / serverless bases (attacker can own a tenant subdomain).
+    for (const h of ['acct.blob.core.windows.net', 'bucket.storage.googleapis.com', 'x.r2.dev', 'app.fly.dev', 'fn.lambda-url.us-east-1.on.aws']) {
+      expect(isSharedHosting(baseDomain(h))).toBe(true);
+    }
     expect(isAgentHost('api.anthropic.com')).toBe(true);
     expect(isAgentHost('o4504.ingest.sentry.io')).toBe(true);
     expect(isAgentHost('anthropic.com')).toBe(false);
