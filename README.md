@@ -57,6 +57,8 @@ The child gets `HTTP_PROXY`, `HTTPS_PROXY`, `ALL_PROXY` (and lowercase variants)
 proxy, `NO_PROXY`/`no_proxy` removed, `NODE_USE_ENV_PROXY=1` (so Node's built-in `fetch` uses the
 proxy) and `EGRESS_TAP_SESSION=<id>`. egress-tap's own messages go to stderr, so the child's
 stdout stays clean for pipes.
+Node children may print a one-time `[UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental`
+on stderr because of `NODE_USE_ENV_PROXY`; it is harmless.
 
 ## Example output
 
