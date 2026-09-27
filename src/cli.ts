@@ -6,7 +6,8 @@ import { claudePatterns, emitClaude, missingDomains, readAllowedDomains } from '
 import { codexPattern, emitCodex } from './emit/codex.js';
 import { explainRules } from './emit/explain.js';
 import { emitJson } from './emit/json.js';
-import { DEFAULT_DIR, readSession } from './log.js';
+import { DEFAULT_DIR, listSessions, previousHosts, readSession } from './log.js';
+import { renderReport, type ReportFormat } from './report.js';
 import { DEFAULT_WILDCARD_MIN } from './wildcard.js';
 import { runCommand } from './run.js';
 import { VERSION } from './version.js';
@@ -31,12 +32,18 @@ async function doRun(argv: string[], opts: RunCliOptions): Promise<void> {
   if (!command) throw new Error('missing command: egress-tap [options] -- <cmd> [args...]');
   const result = await runCommand({ command, args, dir: opts.dir, name: opts.name, quiet: opts.quiet });
   if (!opts.quiet) {
-    const hosts = new Set(result.events.map((e) => e.host)).size;
-    process.stderr.write(
-      `egress-tap: ${hosts} host${hosts === 1 ? '' : 's'}, ${result.events.length} connection${
-        result.events.length === 1 ? '' : 's'
-      } -> ${result.sessionPath}\n`,
-    );
+    const { hosts } = analyze(result.events, { includeAgentHosts: true });
+    const suspicious = hosts.filter((h) => h.flags.length > 0).length;
+    const n = result.events.length;
+    const lines = [
+      `egress-tap: ${hosts.length} host${hosts.length === 1 ? '' : 's'}, ${n} connection${n === 1 ? '' : 's'} -> ${result.sessionPath}`,
+    ];
+    const dirArg = opts.dir === DEFAULT_DIR ? '' : ` --dir ${JSON.stringify(opts.dir)}`;
+    if (suspicious > 0) {
+      lines.push(`  ! ${suspicious} suspicious host${suspicious === 1 ? '' : 's'} (run \`egress-tap report${dirArg}\` for details)`);
+    }
+    if (n > 0) lines.push(`  next: egress-tap emit${dirArg} --format claude`);
+    process.stderr.write(lines.join('\n') + '\n');
   }
   process.exit(result.exitCode);
 }
@@ -102,6 +109,53 @@ export function buildProgram(): Command {
       }
       process.stdout.write(emitClaude(analysis.rules));
       process.stderr.write(explainRules(analysis, (r) => claudePatterns(r).join(', ')));
+    });
+
+  program
+    .command('report')
+    .description('summarize a recorded session: top hosts, suspicious hosts, new hosts')
+    .argument('[session]', 'session id, or "latest"', 'latest')
+    .addOption(new Option('--format <format>', 'output format').choices(['text', 'md']).default('text'))
+    .option('--dir <dir>', 'directory for session logs', DEFAULT_DIR)
+    .action((ref: string, opts: { format: ReportFormat; dir: string }) => {
+      const session = readSession(opts.dir, ref);
+      const prev = previousHosts(opts.dir, session.id);
+      process.stdout.write(
+        renderReport(
+          {
+            sessionId: session.id,
+            path: session.path,
+            events: session.events,
+            previousHosts: prev.hosts,
+            previousSessions: prev.sessions,
+          },
+          opts.format,
+        ),
+      );
+    });
+
+  program
+    .command('ls')
+    .description('list recorded sessions, newest first')
+    .option('--dir <dir>', 'directory for session logs', DEFAULT_DIR)
+    .action((opts: { dir: string }) => {
+      const sessions = listSessions(opts.dir);
+      if (sessions.length === 0) {
+        process.stderr.write(`egress-tap: no sessions in ${opts.dir}\n`);
+        return;
+      }
+      const rows = [['session', 'modified', 'connections', 'hosts']];
+      for (const s of sessions) {
+        const { events } = readSession(opts.dir, s.id);
+        rows.push([
+          s.id,
+          new Date(s.mtimeMs).toISOString().replace(/\.\d{3}Z$/, 'Z'),
+          String(events.length),
+          String(new Set(events.map((e) => e.host)).size),
+        ]);
+      }
+      const widths = rows[0]!.map((_, i) => Math.max(...rows.map((r) => r[i]!.length)));
+      for (const r of rows) process.stdout.write(r.map((c, i) => c.padEnd(widths[i]!)).join('  ').trimEnd() + '\n');
     });
 
   return program;

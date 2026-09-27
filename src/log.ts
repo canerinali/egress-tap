@@ -146,3 +146,19 @@ export function readSession(dir: string, ref = 'latest'): Session {
   }
   return { id, path: file, events: parseJsonl(text) };
 }
+
+/** Hosts seen in sessions older (by mtime) than `id` in the same directory. */
+export function previousHosts(dir: string, id: string): { hosts: Set<string>; sessions: number } {
+  const all = listSessions(dir);
+  const idx = all.findIndex((s) => s.id === id);
+  const older = idx >= 0 ? all.slice(idx + 1) : all.filter((s) => s.id !== id);
+  const hosts = new Set<string>();
+  for (const s of older) {
+    try {
+      for (const e of parseJsonl(readFileSync(s.path, 'utf8'))) hosts.add(e.host.toLowerCase());
+    } catch {
+      // unreadable file: skip
+    }
+  }
+  return { hosts, sessions: older.length };
+}
