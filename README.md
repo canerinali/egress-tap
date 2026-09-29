@@ -5,7 +5,12 @@ Record every host your AI coding agent contacts, then emit the least-privilege C
 Install: `npm install -g egress-tap` (or run it with `npx egress-tap`, Node >= 22)\
 Usage: `npx egress-tap -- claude -p "add a test and run npm install" && npx egress-tap emit --format claude`
 
-<!-- badges -->
+[![ci](https://github.com/canerinali/egress-tap/actions/workflows/ci.yml/badge.svg)](https://github.com/canerinali/egress-tap/actions/workflows/ci.yml)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![node](https://img.shields.io/badge/node-%3E%3D22-brightgreen.svg)](package.json)
+[![release](https://img.shields.io/github/v/tag/canerinali/egress-tap?label=release)](https://github.com/canerinali/egress-tap/releases)
+
+Repository: https://github.com/canerinali/egress-tap
 
 - **See what your agent really reached.** An observe-only local proxy logs one line per connection (`host:port`, bytes, duration). No TLS interception, no CA to install, nothing blocked.
 - **Get a paste-ready allowlist.** Claude Code `sandbox.network.allowedDomains` JSON or a Codex permission profile, with careful wildcards (`*.npmjs.org` yes, `*.github.io` never).
