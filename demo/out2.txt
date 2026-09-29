@@ -1,0 +1,21 @@
+{
+  "sandbox": {
+    "network": {
+      "allowedDomains": [
+        "*.npmjs.org",
+        "api.github.com",
+        "github.com",
+        "npmjs.org",
+        "pypi.org"
+      ]
+    }
+  }
+}
+  hits  host                                          rule
+     4  registry.npmjs.org                            *.npmjs.org, npmjs.org   (3 hosts: registry.npmjs.org, npmjs.org, www.npmjs.org)
+     1  api.github.com                                api.github.com
+     1  github.com                                    github.com
+     1  pypi.org                                      pypi.org
+     1  q7x2k9m4v8p1z6w3r5t0y8u2i4o6a1s3.example.com  OMITTED: suspicious (random-looking label "q7x2k9m4v8p1z6w3r5t0y8u2i4o6a1s3" (32 chars, 4.63 bits/char)), review it
+  excluded agent hosts: api.anthropic.com (--include-agent-hosts to keep)
+  WARNING: this is ONE session. Review every line before allowlisting; see `egress-tap report`.

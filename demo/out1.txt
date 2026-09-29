@@ -1,0 +1,13 @@
+egress-tap: proxy 127.0.0.1:43119 · session demo
+HEAD https://api.anthropic.com/ -> 404
+GET https://registry.npmjs.org/-/ping -> 200
+HEAD https://registry.npmjs.org/commander -> 200
+HEAD https://www.npmjs.org/ -> 301
+HEAD https://npmjs.org/ -> 301
+HEAD https://api.github.com/ -> 200
+HEAD https://github.com/ -> 200
+HEAD https://pypi.org/simple/ -> 200
+HEAD https://q7x2k9m4v8p1z6w3r5t0y8u2i4o6a1s3.example.com/ -> failed (Request was cancelled.)
+egress-tap: 8 hosts, 9 connections -> .egress-tap/demo.jsonl
+  ! 1 suspicious host (run `egress-tap report` for details)
+  next: egress-tap emit --format claude

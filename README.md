@@ -16,9 +16,7 @@ Repository: https://github.com/canerinali/egress-tap
 - **Get a paste-ready allowlist.** Claude Code `sandbox.network.allowedDomains` JSON or a Codex permission profile, with careful wildcards (`*.npmjs.org` yes, `*.github.io` never).
 - **Catch exfil hosts before you lock them in.** Random-looking subdomains, IP literals, paste/tunnel services and odd ports are flagged and never auto-allowlisted.
 
-<!-- demo: uncomment after `vhs demo/demo.tape` has produced demo/demo.gif
 ![egress-tap: observe a fake agent, then emit a Claude Code allowlist](demo/demo.gif)
--->
 
 ## Quickstart
 

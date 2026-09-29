@@ -2,27 +2,26 @@
 
 Goal: the first 100 GitHub stars for https://github.com/canerinali/egress-tap.
 
-> **Install status (read first).** Neither the repo nor the npm package is published yet (the
-> name `egress-tap` is still free on npm as of 2026-09-27). `npx egress-tap` and
-> `npm install -g egress-tap` only work **after you run `npm publish`**. Until then, install from
-> GitHub:
+> **Status (2026-09-29, 11:40 TRT).**
+>
+> - Done: the repo is public, the topics are set, `v0.1.0` is tagged, CI is green, the `prepare`
+>   script is in, the demo GIF is rendered and shown in the README.
+> - Still open, **blocking every post**: `npm publish`. The name is still free on npm, and
+>   `npm pack --dry-run` includes `dist/cli.js` (20 files, 23.2 kB). Every share text below uses
+>   `npx egress-tap`, and that line is broken until the package is on npm.
+> - The demo GIF was rendered with `python3 demo/make-gif.py`, not vhs (vhs is not installed
+>   here). The script draws real output that was captured by running the CLI (`demo/out1.txt`,
+>   `demo/out2.txt`). The vhs tape still works if you prefer it.
+>
+> To publish, run this in the repo, then smoke-test from an empty directory:
 >
 > ```sh
-> npm i -g github:canerinali/egress-tap
+> npm login && npm publish --access public
+> cd "$(mktemp -d)" && npx -y egress-tap@latest --help
 > ```
 >
-> **Caveat:** this does not work with the current `package.json`. `dist/` is gitignored and the
-> only build hook is `prepack`; npm's git install runs `prepare`, not `prepack`. Verified on
-> 2026-09-27 with npm 10.9.8: `npm pack git+file://<repo>` produced a tarball with only
-> `LICENSE`, `README.md` and `package.json` (no `dist/cli.js`), so the `bin` would be broken.
-> Adding `"prepare": "npm run build"` to `scripts` fixes the GitHub install (npm installs the
-> devDependencies for git deps that have a `prepare` script). Until that change lands, the working
-> path is:
->
-> ```sh
-> git clone https://github.com/canerinali/egress-tap && cd egress-tap
-> npm install && npm run build && npm link      # `egress-tap` is now on PATH
-> ```
+> Fallback if npm has to wait: `npm i -g github:canerinali/egress-tap` works now, because the
+> `prepare` script builds `dist/` on a git install.
 
 ---
 
@@ -51,8 +50,7 @@ Usage: `npx egress-tap -- claude -p "add a test and run npm install" && npx egre
 - **Catch exfil hosts before you lock them in.** Random-looking subdomains, IP literals,
   paste/tunnel services and odd ports are flagged and never auto-allowlisted.
 
-A commented-out `![...](demo/demo.gif)` line sits under the bullets; uncomment it once the GIF
-exists (see section 7).
+The demo GIF (`demo/demo.gif`) sits under the bullets.
 
 ---
 
@@ -393,11 +391,11 @@ All times Europe/Istanbul (TRT, UTC+3); US Eastern is 7 hours behind.
 
 ## 7. Post-launch checklist (for you)
 
-1. [ ] Add `"prepare": "npm run build"` to `package.json` scripts (needed for `npm i -g github:canerinali/egress-tap`; see the note at the top).
-2. [ ] Create and push the repo: `gh repo create canerinali/egress-tap --public --source . --push` (run it yourself).
-3. [ ] Set topics: `gh repo edit canerinali/egress-tap --add-topic claude-code,codex,ai-agents,network-security,allowlist,sandbox`
-4. [ ] Record the demo GIF: `npm install && npm run build && vhs demo/demo.tape` (writes `demo/demo.gif`), then uncomment the `![...](demo/demo.gif)` line in README.md and commit both.
+1. [x] Add `"prepare": "npm run build"` to `package.json` scripts (needed for `npm i -g github:canerinali/egress-tap`; see the note at the top).
+2. [x] Create and push the repo: `gh repo create canerinali/egress-tap --public --source . --push` (run it yourself).
+3. [x] Set topics: `gh repo edit canerinali/egress-tap --add-topic claude-code,codex,ai-agents,network-security,allowlist,sandbox`
+4. [x] Record the demo GIF: done 2026-09-29 with `python3 demo/make-gif.py` (vhs alternative: `vhs demo/demo.tape`); shown in README.md.
 5. [ ] Publish to npm: `npm login && npm publish --access public` (the `prepack` hook builds `dist/`). Check with `npm pack --dry-run` first: the tarball must contain `dist/cli.js`.
 6. [ ] Smoke-test from an empty directory: `npx egress-tap@latest --help` and `npx egress-tap -- curl -sI https://example.com && npx egress-tap emit`.
-7. [ ] Add real badges at `<!-- badges -->` (npm version, CI, license).
+7. [x] Add real badges (CI, license, node, release; add the npm badge after publishing) at `<!-- badges -->` (npm version, CI, license).
 8. [ ] First share: **Show HN on Tue 2026-09-29, 15:00 TRT (08:00 ET)**, then follow section 6.
