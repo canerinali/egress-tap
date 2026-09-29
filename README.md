@@ -5,6 +5,7 @@ Record every host your AI coding agent contacts, then emit the least-privilege C
 Install: `npm install -g egress-tap` (or run it with `npx egress-tap`, Node >= 22)\
 Usage: `npx egress-tap -- claude -p "add a test and run npm install" && npx egress-tap emit --format claude`
 
+[![npm](https://img.shields.io/npm/v/egress-tap.svg)](https://www.npmjs.com/package/egress-tap)
 [![ci](https://github.com/canerinali/egress-tap/actions/workflows/ci.yml/badge.svg)](https://github.com/canerinali/egress-tap/actions/workflows/ci.yml)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22-brightgreen.svg)](package.json)

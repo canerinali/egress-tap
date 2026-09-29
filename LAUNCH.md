@@ -2,26 +2,13 @@
 
 Goal: the first 100 GitHub stars for https://github.com/canerinali/egress-tap.
 
-> **Status (2026-09-29, 11:40 TRT).**
+> **Status (2026-09-29, 11:40 TRT).** Ready to post.
 >
-> - Done: the repo is public, the topics are set, `v0.1.0` is tagged, CI is green, the `prepare`
->   script is in, the demo GIF is rendered and shown in the README.
-> - Still open, **blocking every post**: `npm publish`. The name is still free on npm, and
->   `npm pack --dry-run` includes `dist/cli.js` (20 files, 23.2 kB). Every share text below uses
->   `npx egress-tap`, and that line is broken until the package is on npm.
-> - The demo GIF was rendered with `python3 demo/make-gif.py`, not vhs (vhs is not installed
->   here). The script draws real output that was captured by running the CLI (`demo/out1.txt`,
->   `demo/out2.txt`). The vhs tape still works if you prefer it.
->
-> To publish, run this in the repo, then smoke-test from an empty directory:
->
-> ```sh
-> npm login && npm publish --access public
-> cd "$(mktemp -d)" && npx -y egress-tap@latest --help
-> ```
->
-> Fallback if npm has to wait: `npm i -g github:canerinali/egress-tap` works now, because the
-> `prepare` script builds `dist/` on a git install.
+> - The repo is public: topics set, `v0.1.0` released, CI green, the demo GIF in the README.
+> - The package is on npm: `egress-tap@0.1.0`. `npx egress-tap` was smoke-tested from an empty
+>   directory, both the record and the emit steps.
+> - The demo GIF was rendered with `python3 demo/make-gif.py` from real captured CLI output
+>   (`demo/out1.txt`, `demo/out2.txt`). The vhs tape still works as an alternative.
 
 ---
 
@@ -395,7 +382,7 @@ All times Europe/Istanbul (TRT, UTC+3); US Eastern is 7 hours behind.
 2. [x] Create and push the repo: `gh repo create canerinali/egress-tap --public --source . --push` (run it yourself).
 3. [x] Set topics: `gh repo edit canerinali/egress-tap --add-topic claude-code,codex,ai-agents,network-security,allowlist,sandbox`
 4. [x] Record the demo GIF: done 2026-09-29 with `python3 demo/make-gif.py` (vhs alternative: `vhs demo/demo.tape`); shown in README.md.
-5. [ ] Publish to npm: `npm login && npm publish --access public` (the `prepack` hook builds `dist/`). Check with `npm pack --dry-run` first: the tarball must contain `dist/cli.js`.
-6. [ ] Smoke-test from an empty directory: `npx egress-tap@latest --help` and `npx egress-tap -- curl -sI https://example.com && npx egress-tap emit`.
-7. [x] Add real badges (CI, license, node, release; add the npm badge after publishing) at `<!-- badges -->` (npm version, CI, license).
+5. [x] Publish to npm: `npm login && npm publish --access public` (the `prepack` hook builds `dist/`). Check with `npm pack --dry-run` first: the tarball must contain `dist/cli.js`.
+6. [x] Smoke-test from an empty directory: `npx egress-tap@latest --help` and `npx egress-tap -- curl -sI https://example.com && npx egress-tap emit`.
+7. [x] Add real badges (npm, CI, license, node, release) at `<!-- badges -->` (npm version, CI, license).
 8. [ ] First share: **Show HN on Tue 2026-09-29, 15:00 TRT (08:00 ET)**, then follow section 6.
